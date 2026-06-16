@@ -44,7 +44,7 @@
       <input id="keeper-name-input" type="text" placeholder="Enter your name, Keeper…" maxlength="24" />
     </div>
 
-    <button class="btn pulse" onclick="startJourney()">Begin Your Quest ⚔️</button>
+    <button class="btn pulse" id="begin-quest-btn">Begin Your Quest ⚔️</button>
     <p class="title-footer">Progress saved on this device</p>
   </div><!-- /screen-title -->
 
@@ -59,7 +59,7 @@
       <div class="complete-star">⭐</div>
       <div class="complete-msg" id="complete-title">Quest Complete!</div>
       <div class="complete-sub" id="complete-sub">+150 XP earned</div>
-      <button class="btn btn-success mt-12" onclick="closeComplete()">Return to Map</button>
+      <button class="btn btn-success mt-12" id="complete-close-btn">Return to Map</button>
     </div>
 
     <!-- Hub Header -->
@@ -84,10 +84,10 @@
 
     <!-- Tab Bar -->
     <div class="tab-bar">
-      <button class="tab-btn active" onclick="showTab('map')">Quest Map</button>
-      <button class="tab-btn"        onclick="showTab('session')">Train</button>
-      <button class="tab-btn"        onclick="showTab('records')">Records</button>
-      <button class="tab-btn"        onclick="showTab('scroll')">Codex</button>
+      <button class="tab-btn active" data-tab="map">Quest Map</button>
+      <button class="tab-btn"        data-tab="session">Train</button>
+      <button class="tab-btn"        data-tab="records">Records</button>
+      <button class="tab-btn"        data-tab="scroll">Codex</button>
     </div>
 
     <!-- ── TAB: Map ── -->
@@ -115,7 +115,7 @@
           <p class="section-label">Today's Disciplines</p>
           <div id="session-overview" style="font-size:14px;color:var(--ink);line-height:1.7;"></div>
         </div>
-        <button class="btn btn-success" id="begin-session-btn" onclick="startSession()">Begin Trial ⚔️</button>
+        <button class="btn btn-success" id="begin-session-btn">Begin Trial ⚔️</button>
       </div>
 
       <!-- Active session -->
@@ -138,7 +138,7 @@
           </div>
           <div class="reaction-score-row mt-8">
             <span class="reaction-score" id="reaction-score">Cones: 0 / 8</span>
-            <button class="btn" onclick="skipReactionPhase()" style="padding:6px 14px;font-size:11px;">Skip Phase →</button>
+            <button class="btn" id="skip-reaction-btn" style="padding:6px 14px;font-size:11px;">Skip Phase →</button>
           </div>
           <p class="cue-hint">Set 5 cones on the grass (left, right, low-left, low-right, forward). Prop the phone up — it calls each cone aloud. Move to it, touch it, recover to your set position.</p>
         </div>
@@ -148,7 +148,7 @@
           <p class="section-label">Phase II — Strength Trials</p>
           <div class="scroll-inner" id="strength-exercises"></div>
           <div class="flex-end mt-10">
-            <button class="btn btn-success" id="strength-done-btn" onclick="completeStrengthPhase()" disabled>
+            <button class="btn btn-success" id="strength-done-btn" disabled>
               Complete Phase →
             </button>
           </div>
@@ -181,12 +181,12 @@
               <input id="cond-rep-input" type="number" inputmode="numeric" min="0" placeholder="0" />
               <span id="cond-rep-unit" style="font-size:13px;color:var(--gold-dark);">reps</span>
             </div>
-            <button class="btn mt-8" onclick="logCondReps()">Log It →</button>
+            <button class="btn mt-8" id="cond-log-btn">Log It →</button>
           </div>
           <div class="cond-buttons">
-            <button class="btn"         id="cond-start-btn" onclick="startCondExercise()">Start AMRAP ▶</button>
-            <button class="btn"         id="cond-stop-btn" onclick="stopStreak()" style="display:none;">Done — Log Streak ✓</button>
-            <button class="btn btn-success" id="cond-done-btn" onclick="completeCondPhase()" style="display:none;">Finish Trial ⚔️</button>
+            <button class="btn"         id="cond-start-btn">Start AMRAP ▶</button>
+            <button class="btn"         id="cond-stop-btn" style="display:none;">Done — Log Streak ✓</button>
+            <button class="btn btn-success" id="cond-done-btn" style="display:none;">Finish Trial ⚔️</button>
           </div>
         </div>
 
@@ -237,6 +237,6 @@
 
 </div><!-- /app -->
 
-<script src="script.js"></script>
+<script type="module" src="app/main.js"></script>
 </body>
 </html>
