@@ -32,7 +32,7 @@ The drills get a little harder and faster as the 30 days go on.
 
 ## How to use it
 
-1. **Open the app** (see *Running it* below) and enter a keeper name.
+1. **Open the app** at [markohnsman.github.io/keeper-quest](https://markohnsman.github.io/keeper-quest) and enter a keeper name.
 2. **Set up:** find a bit of grass or open space, grab a ball, and lay out five
    cones (or shoes, water bottles — anything) for the reaction drill.
 3. **Prop the phone up** where you can hear it, and tap **Begin Trial**.
@@ -73,78 +73,10 @@ keeper.help()     // print this list
 
 ---
 
-## Running it
+## Play it
 
-Keeper Quest is a plain web app (HTML, CSS, and JavaScript) — there's nothing to
-install and no build step. Because it's split into modules, it needs to be
-*served* over a local web address rather than opened straight from a file.
+Keeper Quest runs right in the browser — nothing to install:
 
-From this folder, start a tiny local server:
+**👉 [markohnsman.github.io/keeper-quest](https://markohnsman.github.io/keeper-quest)**
 
-```bash
-python3 -m http.server 8000
-```
-
-Then open **http://localhost:8000** in a browser (a phone on the same Wi-Fi can
-open it too, using the computer's address). On a phone, "Add to Home Screen" makes
-it feel like a real app.
-
-> Tip for testing: add `?day=15` to the address to jump straight to a given day.
-
----
-
-## For developers
-
-The code follows a light MVC-style split — small files, each doing one job. The
-goal is that a newcomer can open any file and understand it on its own.
-
-```
-index.html              the screens (markup) + <script type="module" src="app/main.js">
-style.css               all styling
-app/
-  main.js               entry point: builds everything, wires the buttons,
-                        and picks the opening screen
-  SessionController.js  owns one day's flow: reaction → strength →
-                        conditioning → ball skills → done (the "controller")
-  console.js            window.keeper — the parent gold console
-
-  data/                 pure data — no logic lives here
-    config.js             tunable numbers (timings, XP values, beep pitches)
-    ranks.js              the rank ladder + two lookups
-    exercises.js          the four exercise pools + the reaction cues
-    lore.js               the story title + quest text for each day
-    days.js               builds one day's plan (which exercises, how many)
-
-  state/                the "model"
-    AppState.js           all saved data (day, XP, records) and the only
-                          methods allowed to change it; saves itself to storage
-
-  services/             one engine per discipline (the workhorses)
-    ReactionService.js    the hands-free cone drill
-    StrengthService.js    the strength checklist
-    TrackService.js       the timed drill engine (conditioning + ball skills)
-
-  ui/                   the "view" — only paints, never changes saved data
-    screens.js            shows one screen / tab / phase at a time; the $ helper
-    hub.js                paints the map, codex, records, and complete overlay
-
-  utils/                small, reusable, app-agnostic helpers
-    rng.js                seeded shuffle + random pick
-    audio.js              beeps and phone vibration
-    speech.js             spoken cues
-```
-
-### The main idea
-
-- **data** never changes and holds no logic.
-- **AppState** is the single source of truth for saved progress. Only its methods
-  change saved data, and they persist for you.
-- **services** run the timers and logic for one discipline each. They don't know
-  about one another — `SessionController` chains them via each service's
-  `onComplete` callback.
-- **ui** only paints; it reads state but never changes it.
-- **utils** are tiny and have no app knowledge.
-
-So the whole day reads top-down in `SessionController`:
-`begin()` → reaction → strength → conditioning → ball skills →
-`state.completeDay()` → the complete overlay.
+On a phone, "Add to Home Screen" makes it feel like a real app.
