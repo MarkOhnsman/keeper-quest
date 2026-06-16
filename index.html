@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keeper Quest — 30-Day Guardian Trials</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ══════════════════════════════════
+       SCREEN: Title / Onboard
+  ══════════════════════════════════ -->
+  <div id="screen-title" class="screen active">
+    <div class="title-crest">🛡️</div>
+    <h1 class="title title-main">Keeper Quest</h1>
+    <p class="title-sub">30-Day Guardian Trials</p>
+
+    <div class="parchment mb-20" style="max-width:480px;margin-left:auto;margin-right:auto;">
+      <p class="lore mb-12">"Only through daily trials does the Guardian earn their place at the Gate.
+        Strength, swiftness, and unyielding will — these are the marks of a true Keeper."</p>
+      <p style="font-size:13px;color:var(--ink-mid);">— The <em>Codex of the Keepers</em></p>
+    </div>
+
+    <div class="stat-row mb-20" style="max-width:380px;margin-left:auto;margin-right:auto;">
+      <div class="stat-block">
+        <div class="stat-val">30</div>
+        <div class="stat-lbl">Daily Quests</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-val">10</div>
+        <div class="stat-lbl">Min / Day</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-val">3</div>
+        <div class="stat-lbl">Disciplines</div>
+      </div>
+    </div>
+
+    <div style="max-width:400px;margin:0 auto 20px;">
+      <p class="name-label">Your Guardian Name</p>
+      <input id="keeper-name-input" type="text" placeholder="Enter your name, Keeper…" maxlength="24" />
+    </div>
+
+    <button class="btn pulse" onclick="startJourney()">Begin Your Quest ⚔️</button>
+    <p class="title-footer">Progress saved on this device</p>
+  </div><!-- /screen-title -->
+
+
+  <!-- ══════════════════════════════════
+       SCREEN: Hub
+  ══════════════════════════════════ -->
+  <div id="screen-hub" class="screen">
+
+    <!-- Session Complete Overlay -->
+    <div id="complete-overlay">
+      <div class="complete-star">⭐</div>
+      <div class="complete-msg" id="complete-title">Quest Complete!</div>
+      <div class="complete-sub" id="complete-sub">+150 XP earned</div>
+      <button class="btn btn-success mt-12" onclick="closeComplete()">Return to Map</button>
+    </div>
+
+    <!-- Hub Header -->
+    <div class="hub-header">
+      <div class="hub-crest">🛡️</div>
+      <div class="hub-info">
+        <div class="hub-keeper-name" id="hub-keeper-name">Guardian</div>
+        <div class="hub-meta">
+          <span class="badge" id="hub-level-badge">Lvl 1 — Initiate</span>
+          <span class="hub-xp-text" id="hub-xp-text">0 XP</span>
+        </div>
+        <div class="xp-bar-wrap mt-8">
+          <div class="xp-bar-fill" id="xp-bar" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="hub-day">
+        <div class="hub-day-label">Day</div>
+        <div class="hub-day-num" id="hub-day-num">1</div>
+        <div class="hub-day-total">/ 30</div>
+      </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="showTab('map')">Quest Map</button>
+      <button class="tab-btn"        onclick="showTab('session')">Train</button>
+      <button class="tab-btn"        onclick="showTab('records')">Records</button>
+      <button class="tab-btn"        onclick="showTab('scroll')">Codex</button>
+    </div>
+
+    <!-- ── TAB: Map ── -->
+    <div id="tab-map" class="tab-content">
+      <p class="section-label">The 30 Trials</p>
+      <div class="day-grid" id="day-grid"></div>
+      <div class="day-legend">
+        <span>✓ Complete</span>
+        <span>Today (highlighted)</span>
+        <span>Locked</span>
+      </div>
+    </div>
+
+    <!-- ── TAB: Session ── -->
+    <div id="tab-session" class="tab-content" style="display:none;">
+
+      <!-- Pre-session preview -->
+      <div id="session-not-started">
+        <p class="cinzel mb-8" id="session-day-label" style="color:var(--gold);font-size:13px;">Day 1 — The Gate Awaits</p>
+        <div class="parchment mb-12 quest-card">
+          <p class="section-label">⚔️ Today's Quest</p>
+          <p class="lore" id="session-quest"></p>
+        </div>
+        <div class="parchment mb-12">
+          <p class="section-label">Today's Disciplines</p>
+          <div id="session-overview" style="font-size:14px;color:var(--ink);line-height:1.7;"></div>
+        </div>
+        <button class="btn btn-success" id="begin-session-btn" onclick="startSession()">Begin Trial ⚔️</button>
+      </div>
+
+      <!-- Active session -->
+      <div id="session-active" style="display:none;">
+
+        <!-- Phase progress dots -->
+        <div class="phase-dots" id="phase-dots">
+          <div class="phase-dot active">⚡ React</div>
+          <div class="phase-dot idle">💪 Strength</div>
+          <div class="phase-dot idle">🔥 Condition</div>
+        </div>
+
+        <!-- ── Phase I: Reaction ── -->
+        <div id="phase-reaction" style="display:none;">
+          <p class="section-label">Phase I — Reaction Trials</p>
+          <div id="cue-display">
+            <span class="cue-phase-label" id="rep-counter">0 / 8</span>
+            <span class="cue-arrow" id="cue-arrow">🧤</span>
+            <span class="cue-label" id="cue-label">READY</span>
+          </div>
+          <div class="reaction-score-row mt-8">
+            <span class="reaction-score" id="reaction-score">Cones: 0 / 8</span>
+            <button class="btn" onclick="skipReactionPhase()" style="padding:6px 14px;font-size:11px;">Skip Phase →</button>
+          </div>
+          <p class="cue-hint">Set 5 cones on the grass (left, right, low-left, low-right, forward). Prop the phone up — it calls each cone aloud. Move to it, touch it, recover to your set position.</p>
+        </div>
+
+        <!-- ── Phase II: Strength ── -->
+        <div id="phase-strength" style="display:none;">
+          <p class="section-label">Phase II — Strength Trials</p>
+          <div class="scroll-inner" id="strength-exercises"></div>
+          <div class="flex-end mt-10">
+            <button class="btn btn-success" id="strength-done-btn" onclick="completeStrengthPhase()" disabled>
+              Complete Phase →
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Phase III/IV: Conditioning & Ball Skills (shared block) ── -->
+        <div id="phase-drill" style="display:none;">
+          <p class="section-label" id="drill-section-label">Phase III — Conditioning Gauntlet</p>
+          <div class="countdown-wrap">
+            <svg id="countdown-ring" width="100" height="100" viewBox="0 0 100 100"
+                 role="img" aria-label="Countdown timer">
+              <title>Countdown Timer</title>
+              <circle class="ring-bg"   cx="50" cy="50" r="42"/>
+              <circle class="ring-fill" id="ring-fill" cx="50" cy="50" r="42"/>
+              <text id="countdown-num" x="50" y="50">30</text>
+            </svg>
+          </div>
+          <div class="mb-8 center">
+            <p class="cinzel" style="font-size:11px;color:var(--gold-dark);letter-spacing:1px;" id="cond-set-label">Exercise 1 of 3 · AMRAP 40s</p>
+          </div>
+          <div id="conditioning-exercise">
+            <p class="cond-ex-name"   id="cond-name"></p>
+            <p class="cond-ex-detail" id="cond-detail"></p>
+            <p class="cond-ex-best" id="cond-best" style="font-size:12px;color:var(--gold-dark);margin-top:6px;"></p>
+          </div>
+          <!-- Rep entry appears when the timer ends / drill is done -->
+          <div id="cond-rep-entry" class="center mt-8" style="display:none;">
+            <p id="cond-rep-prompt" style="font-size:13px;color:var(--ink);margin-bottom:6px;">How many did you do?</p>
+            <div class="cond-rep-input-row">
+              <input id="cond-rep-input" type="number" inputmode="numeric" min="0" placeholder="0" />
+              <span id="cond-rep-unit" style="font-size:13px;color:var(--gold-dark);">reps</span>
+            </div>
+            <button class="btn mt-8" onclick="logCondReps()">Log It →</button>
+          </div>
+          <div class="cond-buttons">
+            <button class="btn"         id="cond-start-btn" onclick="startCondExercise()">Start AMRAP ▶</button>
+            <button class="btn"         id="cond-stop-btn" onclick="stopStreak()" style="display:none;">Done — Log Streak ✓</button>
+            <button class="btn btn-success" id="cond-done-btn" onclick="completeCondPhase()" style="display:none;">Finish Trial ⚔️</button>
+          </div>
+        </div>
+
+      </div><!-- /session-active -->
+    </div><!-- /tab-session -->
+
+    <!-- ── TAB: Records ── -->
+    <div id="tab-records" class="tab-content" style="display:none;">
+      <p class="cinzel mb-12" style="color:var(--gold);font-size:14px;letter-spacing:1px;">🏆 AMRAP Records</p>
+      <div class="scroll-inner" id="records-body"></div>
+    </div><!-- /tab-records -->
+
+    <!-- ── TAB: Codex / Scroll ── -->
+    <div id="tab-scroll" class="tab-content" style="display:none;">
+      <p class="cinzel mb-12" style="color:var(--gold);font-size:14px;letter-spacing:1px;">📜 The Keeper's Codex</p>
+      <div class="scroll-inner">
+
+        <div class="parchment mb-12">
+          <p class="section-label">Ranks of the Guild</p>
+          <div id="rank-list"></div>
+        </div>
+
+        <div class="parchment mb-12">
+          <p class="section-label">Four Disciplines</p>
+          <div style="font-size:13px;color:var(--ink);line-height:1.7;">
+            <p class="mb-8"><strong>⚡ Reaction Trials</strong> — A hands-free cone drill. The app
+              calls a cone aloud; explode to it, touch it, recover to your set position. React before you think.</p>
+            <p class="mb-8"><strong>💪 Strength Trials</strong> — Bodyweight circuits built for
+              goalkeeper-specific power: explosive hips, strong shoulders, lateral force.</p>
+            <p class="mb-8"><strong>🔥 Conditioning Gauntlet</strong> — Fitness AMRAPs (push-ups, squats,
+              jog in place). Go max effort for the timer, then log your count and beat your record.</p>
+            <p><strong>⚽ Ball Skills</strong> — Touch work, juggling streaks, and turn sequences.
+              Build a first touch that never lets you down.</p>
+          </div>
+        </div>
+
+        <div class="parchment">
+          <p class="section-label">The Keeper's Oath</p>
+          <p class="lore">"I shall not skip a day, for it is in the daily trial that greatness is forged.
+            I shall not hold back, for the half-dive saves no one.
+            I shall rise again after every fall, for recovery is the Keeper's greatest strength."</p>
+        </div>
+
+      </div>
+    </div><!-- /tab-scroll -->
+
+  </div><!-- /screen-hub -->
+
+</div><!-- /app -->
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,653 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+/* ── Reset & Root ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold:          #c9a227;
+  --gold-light:    #f0d060;
+  --gold-dark:     #8a6e10;
+  --gold-mid:      #a07820;
+  --parchment:     #f5ead0;
+  --parchment-dark:#d9c99a;
+  --ink:           #1a1208;
+  --ink-mid:       #3d2e10;
+  --ink-light:     #6a5520;
+  --red:           #8b1a1a;
+  --green:         #1a5c2a;
+  --green-light:   #3a8855;
+  --bg:            #0d0a04;
+  --bg-panel:      #1a1208;
+  --bg-raised:     #2a1f05;
+  --border-dim:    #2a2010;
+  --text-dim:      #4a3a18;
+  --save-green:    #7fc8a0;
+  --radius:        4px;
+  --radius-sm:     2px;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--parchment);
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ── App Shell ── */
+#app {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ── Screens ── */
+.screen { display: none; padding: 16px; }
+.screen.active { display: block; }
+/* More breathing room on tablet/desktop so pages fill the window. */
+@media (min-width: 700px) {
+  .screen { padding: 24px 36px; }
+}
+
+/* ── Typography ── */
+.cinzel { font-family: 'Cinzel', serif; }
+.title {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  text-align: center;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.lore {
+  font-style: italic;
+  font-size: 14px;
+  color: var(--parchment-dark);
+  line-height: 1.6;
+}
+.section-label {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* ── Parchment Panel ── */
+.parchment {
+  background: linear-gradient(160deg, #f5ead0 0%, #e8d5a8 100%);
+  border: 2px solid var(--gold-dark);
+  border-radius: var(--radius);
+  color: var(--ink);
+  padding: 16px;
+  position: relative;
+}
+.parchment::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 1px solid var(--parchment-dark);
+  border-radius: calc(var(--radius) - 1px);
+  pointer-events: none;
+}
+.parchment .section-label { color: var(--ink-mid); }
+/* Lore on the light parchment background needs dark ink, not the light tan
+   used for lore on dark panels. */
+.parchment .lore { color: var(--ink-mid); }
+
+/* Quest card — the daily story beat, given a touch more presence. */
+.quest-card { border-width: 3px; box-shadow: 0 0 14px rgba(201,162,39,0.25); }
+.quest-card .lore { font-size: 15px; }
+
+/* ── Buttons ── */
+.btn {
+  font-family: 'Cinzel', serif;
+  background: var(--gold-dark);
+  color: var(--gold-light);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-sm);
+  padding: 10px 22px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.15s, transform 0.1s;
+  display: inline-block;
+}
+.btn:hover { background: var(--gold-mid); }
+.btn:active { transform: scale(0.97); }
+.btn.btn-danger  { background: var(--red);   color: #f5d0d0; border-color: #c44; }
+.btn.btn-success { background: var(--green); color: #d0f5d8; border-color: var(--green-light); }
+.btn.btn-success:hover { background: #1e6e32; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ── XP Bar ── */
+.xp-bar-wrap {
+  background: #2a1f05;
+  border: 1px solid var(--gold-dark);
+  border-radius: 2px;
+  height: 10px;
+  overflow: hidden;
+}
+.xp-bar-fill {
+  height: 100%;
+  background: var(--gold);
+  transition: width 0.6s ease;
+  border-radius: 2px;
+}
+
+/* ── Badge ── */
+.badge {
+  display: inline-block;
+  background: var(--gold-dark);
+  color: var(--gold-light);
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 1px;
+}
+
+/* ── Stat Blocks ── */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.stat-block {
+  background: var(--bg-panel);
+  border: 1px solid var(--gold-dark);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  text-align: center;
+}
+.stat-val {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 20px;
+  line-height: 1.2;
+}
+.stat-lbl {
+  font-size: 11px;
+  color: var(--parchment-dark);
+  margin-top: 2px;
+}
+
+/* ── Tab Bar ── */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.tab-btn {
+  flex: 1;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 7px 4px;
+  border: 1px solid var(--gold-dark);
+  border-radius: var(--radius-sm);
+  background: var(--bg-panel);
+  color: var(--parchment-dark);
+  cursor: pointer;
+  transition: background 0.1s;
+  text-align: center;
+  text-transform: uppercase;
+}
+.tab-btn:hover { background: var(--bg-raised); }
+.tab-btn.active { background: var(--gold-dark); color: var(--gold-light); }
+
+/* ── Hub Header ── */
+.hub-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.hub-crest { font-size: 28px; }
+.hub-info { flex: 1; }
+.hub-keeper-name {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 14px;
+}
+.hub-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+}
+.hub-xp-text {
+  font-size: 11px;
+  color: var(--parchment-dark);
+}
+.hub-day {
+  text-align: right;
+}
+.hub-day-label {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 11px;
+}
+.hub-day-num {
+  font-family: 'Cinzel', serif;
+  color: var(--gold-light);
+  font-size: 26px;
+  line-height: 1;
+}
+.hub-day-total {
+  font-size: 10px;
+  color: var(--parchment-dark);
+}
+
+/* ── Day Grid ── */
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+.day-cell {
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--gold-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  cursor: pointer;
+  transition: transform 0.12s;
+  position: relative;
+  user-select: none;
+}
+.day-cell.locked   { background: var(--bg); color: var(--text-dim); border-color: var(--border-dim); cursor: default; }
+.day-cell.completed{ background: #1a3020; border-color: var(--green-light); color: var(--save-green); }
+.day-cell.available{ background: var(--bg-raised); color: var(--gold); }
+.day-cell.available:hover { transform: scale(1.08); background: #3d2e00; }
+.day-cell.today    { background: #3d2e00; border-color: var(--gold); color: var(--gold-light); box-shadow: 0 0 8px rgba(201,162,39,0.35); }
+.day-cell.today:hover { transform: scale(1.08); }
+.day-cell .day-icon { font-size: 13px; }
+.day-legend {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--parchment-dark);
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+/* ── Cue Display ── */
+#cue-display {
+  background: var(--bg);
+  border: 3px solid var(--gold-dark);
+  border-radius: var(--radius);
+  height: 60vh;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+.cue-phase-label {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  font-size: 14px;
+  color: var(--gold-dark);
+  font-family: 'Cinzel', serif;
+}
+.cue-arrow {
+  font-size: clamp(140px, 40vw, 260px);
+  line-height: 1;
+  filter: drop-shadow(0 0 8px rgba(201,162,39,0.5));
+  transition: opacity 0.08s;
+}
+.cue-label {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: clamp(24px, 7vw, 40px);
+  letter-spacing: 3px;
+}
+.cue-hint {
+  font-size: 12px;
+  color: var(--parchment-dark);
+  text-align: center;
+  margin-top: 6px;
+}
+.reaction-score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+.reaction-score {
+  font-size: 13px;
+  color: var(--parchment-dark);
+}
+
+@keyframes cue-flash {
+  0%   { opacity: 0; transform: scale(1.25); }
+  30%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.cue-animate {
+  animation: cue-flash 0.22s ease-out;
+}
+
+/* ── Phase Dots ── */
+.phase-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.phase-dot {
+  flex: 1;
+  text-align: center;
+  padding: 5px 2px;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  border: 1px solid;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.phase-dot.idle     { background: var(--bg-panel); color: var(--text-dim); border-color: var(--border-dim); }
+.phase-dot.active   { background: #3d2e00; color: var(--gold); border-color: var(--gold); }
+.phase-dot.done     { background: #1a3020; color: var(--save-green); border-color: var(--green-light); }
+
+/* ── Exercise Cards ── */
+.exercise-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--gold-dark);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 8px;
+}
+.exercise-card-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.ex-name {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 14px;
+}
+.ex-detail {
+  color: var(--parchment-dark);
+  font-size: 13px;
+  margin-top: 3px;
+}
+.ex-check {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border: 1px solid var(--gold-dark);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--save-green);
+  transition: background 0.15s, border-color 0.15s;
+}
+.ex-check.done { background: #1a3020; border-color: var(--green-light); }
+.ex-check:hover { border-color: var(--gold); }
+
+/* ── Countdown Ring ── */
+.countdown-wrap { text-align: center; margin-bottom: 10px; }
+#countdown-ring { display: block; margin: 0 auto; }
+.ring-bg   { fill: none; stroke: #2a2010; stroke-width: 6; }
+.ring-fill {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 264;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.25s linear;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+#countdown-num {
+  font-family: 'Cinzel', serif;
+  fill: var(--gold-light);
+  font-size: 28px;
+  dominant-baseline: middle;
+  text-anchor: middle;
+}
+.cond-ex-name {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.cond-ex-detail {
+  color: var(--parchment-dark);
+  font-size: 14px;
+  text-align: center;
+}
+.cond-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+/* ── Scrollable Inner ── */
+.scroll-inner {
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.scroll-inner::-webkit-scrollbar { width: 4px; }
+.scroll-inner::-webkit-scrollbar-track { background: var(--bg-panel); }
+.scroll-inner::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 2px; }
+
+/* ── Rank List ── */
+.rank-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+  font-size: 13px;
+  color: var(--ink);
+}
+.rank-row .rank-xp {
+  margin-left: auto;
+  color: var(--ink-light);
+  font-size: 12px;
+}
+.rank-row.current-rank { color: var(--red); font-weight: 600; }
+
+/* ── Complete Overlay ── */
+#complete-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 8, 2, 0.92);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 100;
+}
+#complete-overlay.show { display: flex; }
+.complete-star { font-size: 56px; }
+.complete-msg {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 18px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+.complete-sub {
+  color: var(--parchment-dark);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ── Title Screen ── */
+#screen-title { text-align: center; padding: 24px 16px; }
+.title-crest { font-size: 56px; margin-bottom: 8px; }
+.title-main  { font-size: 24px; margin-bottom: 4px; }
+.title-sub   {
+  font-family: 'Cinzel', serif;
+  color: var(--gold-dark);
+  font-size: 11px;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+}
+.name-label {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+#keeper-name-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-family: 'Crimson Text', serif;
+  font-size: 16px;
+  background: var(--bg-panel);
+  border: 1px solid var(--gold-dark);
+  color: var(--parchment);
+  border-radius: var(--radius-sm);
+  outline: none;
+  margin-bottom: 20px;
+  transition: border-color 0.15s;
+}
+#keeper-name-input:focus { border-color: var(--gold); }
+
+/* AMRAP rep entry */
+.cond-rep-input-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+#cond-rep-input {
+  width: 110px;
+  padding: 10px 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  text-align: center;
+  background: var(--bg-panel);
+  border: 1px solid var(--gold-dark);
+  color: var(--gold);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.15s;
+}
+#cond-rep-input:focus { border-color: var(--gold); }
+
+/* AMRAP records view */
+.record-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.record-name {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  color: var(--parchment);
+}
+.record-best {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: var(--gold);
+  white-space: nowrap;
+}
+.record-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.record-chip {
+  font-size: 12px;
+  color: var(--ink);
+  background: var(--bg-panel);
+  border: 1px solid var(--gold-dark);
+  border-radius: var(--radius-sm);
+  padding: 3px 8px;
+}
+.record-chip strong { color: var(--gold); }
+
+/* Optional rep log on strength cards */
+.ex-log-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.strength-rep-input {
+  width: 90px;
+  padding: 5px 8px;
+  font-family: 'Crimson Text', serif;
+  font-size: 14px;
+  background: var(--bg-panel);
+  border: 1px solid var(--gold-dark);
+  color: var(--gold);
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+.strength-rep-input:focus { border-color: var(--gold); }
+.ex-log-best {
+  font-size: 11px;
+  color: var(--gold-dark);
+  font-family: 'Cinzel', serif;
+}
+.title-footer {
+  font-size: 12px;
+  color: var(--gold-dark);
+  margin-top: 12px;
+  font-family: 'Cinzel', serif;
+}
+
+/* ── Ornament ── */
+.ornament {
+  text-align: center;
+  color: var(--gold-dark);
+  font-size: 18px;
+  margin: 10px 0;
+  letter-spacing: 6px;
+}
+
+/* ── Pulse animation ── */
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 4px rgba(201,162,39,0.25); }
+  50%       { box-shadow: 0 0 16px rgba(201,162,39,0.6); }
+}
+.pulse { animation: pulse-gold 1.8s infinite; }
+
+/* ── Utility spacers ── */
+.mb-8  { margin-bottom: 8px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-20 { margin-bottom: 20px; }
+.mt-8  { margin-top: 8px; }
+.mt-10 { margin-top: 10px; }
+.mt-12 { margin-top: 12px; }
+.flex-end { display: flex; justify-content: flex-end; }
+.center    { text-align: center; }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .stat-val  { font-size: 17px; }
+  .day-grid  { grid-template-columns: repeat(5, 1fr); }
+}
