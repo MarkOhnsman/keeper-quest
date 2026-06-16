@@ -10,6 +10,7 @@ import { TrackService } from "./services/TrackService.js";
 import { SessionController } from "./SessionController.js";
 import { $, showScreen } from "./ui/screens.js";
 import { refreshHub, openTab, hideComplete } from "./ui/hub.js";
+import { installConsole } from "./console.js";
 import { TOTAL_DAYS } from "./data/config.js";
 
 // ---- build the app ----
@@ -53,6 +54,9 @@ $("cond-rep-input").addEventListener("keydown", (e) => { if (e.key === "Enter") 
 $("cond-done-btn").addEventListener("click", () => track.complete());
 
 $("complete-close-btn").addEventListener("click", () => { hideComplete(); openTab("map"); });
+
+// Parent console for managing gold (window.keeper.help()).
+installConsole(state, refreshHub);
 
 // ---- decide the opening screen ----
 const dayParam = parseInt(new URLSearchParams(location.search).get("day"), 10);

@@ -50,6 +50,27 @@ The drills get a little harder and faster as the 30 days go on.
 Progress is saved automatically **on the device** — no account, no internet, no
 data leaves the phone.
 
+### Gold 🪙 — a reward you can spend in real life
+
+Beating a personal best on any counted drill earns **one gold coin** (the
+first-ever score on a drill just sets the bar — beat it later to earn the coin).
+Gold is separate from XP: XP raises your rank forever, gold is a spendable
+reward. The running total shows at the top of the hub.
+
+This is designed so a parent can run a real-life "store" — agree on what gold
+buys (screen time, a treat, a trip), and deduct it when it's spent.
+
+**Parent console** — open the browser's developer console (on a computer:
+right-click → Inspect → Console) and use:
+
+```js
+keeper.gold       // see the current balance
+keeper.spend(5)   // deduct 5 gold when it's spent in real life
+keeper.add(3)     // add 3 gold by hand
+keeper.reset()    // set gold back to 0
+keeper.help()     // print this list
+```
+
 ---
 
 ## Running it
@@ -85,6 +106,7 @@ app/
                         and picks the opening screen
   SessionController.js  owns one day's flow: reaction → strength →
                         conditioning → ball skills → done (the "controller")
+  console.js            window.keeper — the parent gold console
 
   data/                 pure data — no logic lives here
     config.js             tunable numbers (timings, XP values, beep pitches)

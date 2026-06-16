@@ -38,7 +38,8 @@ export class SessionController {
 
   begin() {
     const dayNum = this.state.currentDay;
-    this.run = { dayNum, plan: buildDay(dayNum), xp: 0 };
+    // Remember the gold balance so we can show how much was earned today.
+    this.run = { dayNum, plan: buildDay(dayNum), xp: 0, goldAtStart: this.state.gold };
 
     $("session-not-started").style.display = "none";
     $("session-active").style.display = "block";
@@ -79,9 +80,10 @@ export class SessionController {
   }
 
   finish() {
-    const { dayNum, xp } = this.run;
+    const { dayNum, xp, goldAtStart } = this.run;
+    const goldEarned = this.state.gold - goldAtStart;
     this.state.completeDay(dayNum, xp);
-    showComplete(dayNum, xp, this.state.totalXP);
+    showComplete(dayNum, xp, this.state.totalXP, goldEarned);
     this.run = null;
   }
 

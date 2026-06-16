@@ -12,6 +12,11 @@ import { DAY_LORE, DAY_QUESTS } from "../data/lore.js";
 import { buildDay } from "../data/days.js";
 import { $, showTab } from "./screens.js";
 
+// The gold-coin.png icon as inline markup (small for the hub, large for the
+// day-complete celebration).
+const COIN = '<img class="coin-icon" src="gold-coin.png" alt="gold" />';
+const COIN_LG = '<img class="coin-icon coin-icon-lg" src="gold-coin.png" alt="gold" />';
+
 // Open a hub tab and refresh its contents (the map cells link here too).
 export function openTab(tab) {
   showTab(tab, {
@@ -41,6 +46,9 @@ function renderHeader() {
   $("hub-xp-text").textContent = `${state.totalXP} XP`;
   $("xp-bar").style.width = pct + "%";
   $("hub-day-num").textContent = state.currentDay;
+
+  const goldEl = $("hub-gold");
+  if (goldEl) goldEl.innerHTML = `${COIN} ${state.gold}`;
 }
 
 // ---- Quest Map: the 30-day grid ----
@@ -169,9 +177,11 @@ function renderRecordCard(name, entries) {
 }
 
 // ---- "day complete" overlay ----
-export function showComplete(day, sessionXP, totalXP) {
+export function showComplete(day, sessionXP, totalXP, goldEarned = 0) {
   $("complete-title").textContent = `Day ${day} Complete! ⚔️`;
-  $("complete-sub").textContent = `+${sessionXP} XP earned · ${totalXP} total XP`;
+  let sub = `+${sessionXP} XP earned · ${totalXP} total XP`;
+  if (goldEarned > 0) sub += ` · ${COIN_LG} +${goldEarned} gold`;
+  $("complete-sub").innerHTML = sub;
   $("complete-overlay").classList.add("show");
   refreshHub();
 }

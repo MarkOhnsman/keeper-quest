@@ -10,7 +10,7 @@
 // Lifecycle: start(cfg) -> (per-exercise run + log) -> complete() -> cfg.onComplete(xp).
 // =======================================================
 import {
-  AMRAP_SECONDS, RING_CIRCUMFERENCE, GO_PAUSE_MS, TONES, EFFORT_CAP, RECORD_BONUS_XP,
+  AMRAP_SECONDS, RING_CIRCUMFERENCE, GO_PAUSE_MS, TONES, EFFORT_CAP, RECORD_BONUS_XP, GOLD_PER_RECORD,
 } from "../data/config.js";
 import { beep, buzz } from "../utils/audio.js";
 import { speak } from "../utils/speech.js";
@@ -162,12 +162,19 @@ export class TrackService {
     const ex = this.current();
     const reps = Math.max(0, parseInt($("cond-rep-input").value, 10) || 0);
     const prevBest = this.state.getCondBest(ex.name);
+    const beat = this.beatRecord(reps, prevBest);
 
     // Skill drills may be left blank — only persist a real count.
     if (reps > 0) this.state.recordCondBest(ex.name, reps, ex.unit);
 
     this.run.xp += this.xpFor(ex, reps, prevBest);
-    if (this.beatRecord(reps, prevBest)) speak("New record!");
+
+    // A new personal best earns spendable gold.
+    if (beat) {
+      this.state.addGold(GOLD_PER_RECORD);
+      const coins = GOLD_PER_RECORD === 1 ? "one gold coin" : `${GOLD_PER_RECORD} gold`;
+      speak(`New record! You earned ${coins}!`);
+    }
 
     this.run.index++;
     if (this.run.index >= this.run.list.length) {

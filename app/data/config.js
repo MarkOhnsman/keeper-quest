@@ -30,3 +30,8 @@ export const REACTION_BASE_XP = 50;     // for completing the reaction phase
 export const REACTION_PER_SAVE_XP = 5;  // bonus per cone reached
 export const RECORD_BONUS_XP = 25;      // bonus for beating a personal best
 export const EFFORT_CAP = 60;           // most "effort" XP a single drill can add
+
+// ---- Gold (a spendable reward, separate from XP) ----
+// Earned each time a logged count beats an EXISTING personal best. A first-ever
+// score just sets the bar, so it earns nothing. Spendable in real life.
+export const GOLD_PER_RECORD = 1;
