@@ -7,9 +7,10 @@ import { state } from "./state/AppState.js";
 import { ReactionService } from "./services/ReactionService.js";
 import { StrengthService } from "./services/StrengthService.js";
 import { TrackService } from "./services/TrackService.js";
+import { GoldService } from "./services/GoldService.js";
 import { SessionController } from "./SessionController.js";
 import { $, showScreen } from "./ui/screens.js";
-import { refreshHub, openTab, hideComplete } from "./ui/hub.js";
+import { refreshHub, openTab, hideComplete, paintGold } from "./ui/hub.js";
 import { installConsole } from "./console.js";
 import { TOTAL_DAYS } from "./data/config.js";
 
@@ -17,6 +18,8 @@ import { TOTAL_DAYS } from "./data/config.js";
 const reaction = new ReactionService();
 const strength = new StrengthService(state);
 const track = new TrackService(state);
+const gold = new GoldService(state);
+gold.onChange = paintGold;
 const session = new SessionController(state, { reaction, strength, track });
 
 // ---- onboarding ----
@@ -54,6 +57,13 @@ $("cond-rep-input").addEventListener("keydown", (e) => { if (e.key === "Enter") 
 $("cond-done-btn").addEventListener("click", () => track.complete());
 
 $("complete-close-btn").addEventListener("click", () => { hideComplete(); openTab("map"); });
+
+// Parent-gated manual gold editing (Records tab).
+$("gold-add-btn").addEventListener("click", () => gold.open("add"));
+$("gold-remove-btn").addEventListener("click", () => gold.open("remove"));
+$("gold-apply-btn").addEventListener("click", () => gold.apply());
+$("gold-cancel-btn").addEventListener("click", () => gold.cancel());
+$("gold-pass").addEventListener("keydown", (e) => { if (e.key === "Enter") gold.apply(); });
 
 // Parent console for managing gold (window.keeper.help()).
 installConsole(state, refreshHub);

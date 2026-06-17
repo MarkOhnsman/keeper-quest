@@ -35,3 +35,8 @@ export const EFFORT_CAP = 60;           // most "effort" XP a single drill can a
 // Earned each time a logged count beats an EXISTING personal best. A first-ever
 // score just sets the bar, so it earns nothing. Spendable in real life.
 export const GOLD_PER_RECORD = 1;
+
+// A light "parent gate" on manual gold edits (the Add/Remove buttons in the
+// Records tab) — just enough to stop the keeper from quietly topping up their
+// own balance. It is not real security; the value lives in the page source.
+export const PARENT_PASSWORD = "goldcoin";

@@ -47,8 +47,17 @@ function renderHeader() {
   $("xp-bar").style.width = pct + "%";
   $("hub-day-num").textContent = state.currentDay;
 
+  paintGold();
+}
+
+// Paint every gold display (header tally + the Records-tab purse balance).
+// Exported so the parent gold editor can refresh after a manual change.
+export function paintGold() {
   const goldEl = $("hub-gold");
   if (goldEl) goldEl.innerHTML = `${COIN} ${state.gold}`;
+
+  const purseEl = $("purse-balance");
+  if (purseEl) purseEl.innerHTML = `${COIN_LG} ${state.gold}`;
 }
 
 // ---- Quest Map: the 30-day grid ----
@@ -135,6 +144,8 @@ function renderOverview(plan) {
 
 // ---- Records book: personal bests + recent history ----
 function renderRecords() {
+  paintGold();
+
   const body = $("records-body");
   if (!body) return;
 

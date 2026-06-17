@@ -196,6 +196,29 @@
 
     <!-- ── TAB: Records ── -->
     <div id="tab-records" class="tab-content" style="display:none;">
+
+      <!-- Keeper's Purse: gold balance + parent-gated manual editing -->
+      <div class="parchment mb-12 purse-card">
+        <p class="section-label">The Keeper's Purse</p>
+        <div class="purse-balance" id="purse-balance"><img class="coin-icon coin-icon-lg" src="gold-coin.png" alt="gold" /> 0</div>
+        <div class="purse-actions">
+          <button class="btn" id="gold-add-btn" style="padding:6px 14px;font-size:12px;">＋ Add Gold</button>
+          <button class="btn" id="gold-remove-btn" style="padding:6px 14px;font-size:12px;">－ Remove Gold</button>
+        </div>
+        <p class="purse-hint">Adding or removing gold needs the parent password.</p>
+
+        <div class="gold-editor" id="gold-editor">
+          <p class="cinzel" id="gold-editor-title" style="color:var(--gold);font-size:13px;letter-spacing:1px;">Add Gold</p>
+          <input id="gold-amount" type="number" inputmode="numeric" min="1" placeholder="how many" />
+          <input id="gold-pass" type="password" autocomplete="off" placeholder="parent password" />
+          <div class="gold-editor-msg" id="gold-msg"></div>
+          <div class="gold-editor-actions">
+            <button class="btn btn-success" id="gold-apply-btn" style="padding:6px 14px;font-size:12px;">Apply</button>
+            <button class="btn" id="gold-cancel-btn" style="padding:6px 14px;font-size:12px;">Cancel</button>
+          </div>
+        </div>
+      </div>
+
       <p class="cinzel mb-12" style="color:var(--gold);font-size:14px;letter-spacing:1px;">🏆 AMRAP Records</p>
       <div class="scroll-inner" id="records-body"></div>
     </div><!-- /tab-records -->

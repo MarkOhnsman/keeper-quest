@@ -575,6 +575,61 @@ html, body {
 }
 #cond-rep-input:focus { border-color: var(--gold); }
 
+/* ── Keeper's Purse: gold balance + parent-gated editor ── */
+.purse-card { text-align: center; }
+.purse-balance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Cinzel', serif;
+  font-size: 26px;
+  color: var(--gold);
+  margin: 4px 0 10px;
+}
+.purse-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.purse-hint {
+  font-size: 11px;
+  color: var(--ink-light);
+  margin-top: 8px;
+}
+
+.gold-editor { display: none; }
+.gold-editor.show {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--parchment-dark);
+}
+.gold-editor input {
+  width: min(70vw, 220px);
+  padding: 8px 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  text-align: center;
+  background: var(--bg-panel);
+  border: 1px solid var(--gold-dark);
+  color: var(--gold);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.gold-editor input:focus { border-color: var(--gold); }
+.gold-editor-actions { display: flex; gap: 10px; }
+.gold-editor-msg {
+  font-size: 12px;
+  min-height: 14px;
+}
+.gold-editor-msg.err { color: #d97a7a; }
+.gold-editor-msg.ok  { color: var(--save-green); }
+
 /* AMRAP records view */
 .record-head {
   display: flex;
